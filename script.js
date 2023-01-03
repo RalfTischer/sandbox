@@ -30,7 +30,7 @@ function draw() {
   );
   ctx.translate(105, 0);
   ctx.fillRect(0, -12, 40, 24); // Shadow
-  ctx.drawImage(earth, -12, -12);
+  ctx.drawImage(earth, -12, -12, 24, 24);
 
   // Moon
   ctx.save();
@@ -39,7 +39,7 @@ function draw() {
       ((2 * Math.PI) / 6000) * time.getMilliseconds()
   );
   ctx.translate(0, 28.5);
-  ctx.drawImage(moon, -3.5, -3.5);
+  ctx.drawImage(moon, -3.5, -3.5, 7, 7);
   ctx.restore();
 
   ctx.restore();
