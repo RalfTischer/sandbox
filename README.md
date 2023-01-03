@@ -1,8 +1,6 @@
 # sandbox
 Sandbox to try out things
-
-# URL
-https://ralftischer.github.io/sandbox/
+- URL: https://ralftischer.github.io/sandbox/
 
 ## 1.Canvas
 ### Sources to explore:
