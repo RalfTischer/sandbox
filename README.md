@@ -1,6 +1,6 @@
 # sandbox
-Sandbox to try out things
-NOTHING IS FINISHED HERE!
+Sandbox to try out things. 
+*NOTHING IS FINISHED HERE!*
 
 
 ## 1. Canvas: Solar system
