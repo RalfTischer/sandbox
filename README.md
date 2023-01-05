@@ -1,5 +1,6 @@
 # sandbox
 Sandbox to try out things
+NOTHING IS FINISHED HERE!
 
 
 ## 1. Canvas: Solar system
@@ -16,3 +17,11 @@ Sandbox to try out things
 - line by line, not point by point
 - change direction
 - hanlde multiple flashes
+
+## 3. Chat:
+- try to connect with ChatGPT
+- voice control
+
+## 4. Check Cordova
+- to run code on android devices
+- unsigned/ signed  APK possible?
