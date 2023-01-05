@@ -18,7 +18,7 @@ NOTHING IS FINISHED HERE!
 - change direction
 - hanlde multiple flashes
 
-## 3. Chat:
+## 3. Chat
 - try to connect with ChatGPT
 - voice control
 
