@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chat with ChatGPT</title>
+  <style>
+    /* Add some style to make the chat look nice */
+  </style>
+</head>
+<body>
+  <h1>Chat with ChatGPT</h1>
+
+  <div id="chat-log">
+    <!-- This is where the chat messages will be displayed -->
+  </div>
+
+  <form id="chat-form">
+    <!-- This is the form for sending a message to ChatGPT -->
+    <input type="text" id="chat-input" placeholder="Type your message here">
+    <button type="submit">Send</button>
+  </form>
+
+  <script>
+    // Use JavaScript to send the message to ChatGPT and display the response
+    const chatForm = document.getElementById('chat-form');
+    const chatInput = document.getElementById('chat-input');
+    const chatLog = document.getElementById('chat-log');
+
+    chatForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    // Send the message to ChatGPT
+    fetch('https://api.openai.com/v1/chatGPT', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': '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',
+        },
+        body: JSON.stringify({
+            'prompt': chatInput.value,
+            'max_tokens': 128,
+        }),
+        })
+        .then((response) => response.json())
+        .then((response) => {
+            // Display the response from ChatGPT
+            chatLog.innerHTML += `<p><strong>ChatGPT:</strong> ${response.text}</p>`;
+
+            // Clear the chat input
+            chatInput.value = '';
+        });
+        });
+
+  </script>
+</body>
+</html>
