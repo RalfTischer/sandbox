@@ -27,28 +27,45 @@ function flash() {
     ctx.save();
     ctx.translate(el.clientWidth / 2, el.clientHeight / 2);     // center = 0,0
 
-    dir = Math.random() * 2 * Math.PI;
+    dir0 = Math.random() * 2 * Math.PI;
     l = LENGTH * SIZE * (1 + (Math.random() - 0.5) * LENGTH_VAR);
 
     console.log(`Flash! dir = ${dir * 180 / Math.PI}°, l = ${l}, w = ${WIDTH * SIZE}, c = ${COLOR}`);
+    
+    // dir = 0;
+    x = 0;
+    y = 0;
+    let l0 = 20;
+    let ll = l0;
+    
+    dir = dir0;
+    // ctx.rotate(dir);
 
-    for (let i = 0; i < l; i+=1) {
+    for (let i = 0; i < l; i += ll) {
         color = `rgba(${main_playerColorOnly(2)}, ${(1 - (i / l)) })`   // fading out in time NOT WORKING PROPRLY
+        color = `rgba(${main_playerColorOnly(2)}, ${(1) })`   // fading out in time NOT WORKING PROPRLY
         ctx.fillStyle = color;
         ctx.strokeStyle = color;
         ctx.lineWidth = WIDTH * SIZE;
-        // ctx.beginPath(0,0);
-        ctx.moveTo(0, 0);
-        x = Math.sin(dir);
-        y = Math.cos(dir);
-        ctx.lineTo(x, y);              
+
+        ctx.moveTo(x, y);
+        if (Math.random() < 0.1) {
+            ll = Math.floor(l0 * Math.random() * 0.3 - 0.15);
+            dir = Math.floor(dir0 * Math.random() * 0.1 - 0.05); 
+        }
+
+
+        x += ll * Math.cos(dir);
+        y += ll * Math.sin(dir);
+        ctx.lineTo(x, y);  
         ctx.stroke();
 
-        // console.log(`c = ${color}`);
 
-        ctx.translate(x, y);     // go to new position 
+        // console.log(`c = ${color}`);      
+        
     }
 
+    
     ctx.restore();
 
     return;

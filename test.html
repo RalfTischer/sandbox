@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- <script scr="anime.min.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.0.1/lib/anime.min.js"></script>  
+  <link rel="stylesheet" href="style.css">
+  
+  <title>anime.js test</title>
+</head>
+<body>
+	<div>
+		<h2>anime.js test</h2>
+	</div>
+	
+	<!-- 
+	<div class ="circle"></div>
+	<div class ="circle"></div>
+	<div class ="circle"></div>
+	-->
+	<canvas id = "canvas" width = 600 height = 300 style="background-color: darkblue">Not supported</canvas>
+	
+	<script>
+		const canvas = document.getElementById("canvas");
+		const ctx = canvas.getContext("2d");
+		const colors = ['white', 'red'];
+		const numberOfParticules = 10;
+		
+		anime({
+			targets: ".circle",
+			translateX: 500,
+			duration: 1500,
+			background: "#000000",
+			scale: 5,
+			delay: anime.stagger(500)
+		})
+		
+		animateParticules(anime.random(0, 600), anime.random(0, 300));
+		
+		function setParticuleDirection(p) {
+		  var angle = anime.random(0, 360) * Math.PI / 180;
+		  var value = anime.random(50, 180);
+		  var radius = [-1, 1][anime.random(0, 1)] * value;
+		  return {
+			x: p.x + radius * Math.cos(angle),
+			y: p.y + radius * Math.sin(angle)
+		  }
+		}
+		
+		function createParticule(x,y) {
+		  console.log('Create Particle ' + x + ', ' + y);
+		  var p = {};
+		  p.x = x;
+		  p.y = y;
+		  p.color = colors[anime.random(0, colors.length - 1)];
+		  p.color = 'red';
+		  p.radius = anime.random(16, 32);
+		  p.endPos = setParticuleDirection(p);
+		  p.draw = function() {
+			ctx.beginPath();
+			ctx.arc(p.x, p.y, p.radius, 0, 2 * Math.PI, true);
+			ctx.fillStyle = p.color;
+			ctx.fill();
+		  }
+		  return p;
+		}
+		
+		function renderParticule(anim) {
+		  for (var i = 0; i < anim.animatables.length; i++) {
+			anim.animatables[i].target.draw();
+			}
+		  }
+
+		
+		function animateParticules(x, y) {
+		
+		  var particules = [];
+		  for (var i = 0; i < numberOfParticules; i++) {
+			particules.push(createParticule(x, y));
+		  }
+		  anime.timeline().add({
+			targets: particules,
+			x: function(p) { return p.endPos.x; },
+			y: function(p) { return p.endPos.y; },
+			radius: 1,
+			duration: anime.random(1200, 1800),
+			easing: 'easeOutExpo',
+			update: renderParticule
+		  })
+			
+		}
+
+	</script>
+
+	
+</body>
+
