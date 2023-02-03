@@ -7,13 +7,31 @@ function startup() {
     el.addEventListener('touchmove', handleMove);
     window.addEventListener('resize', resizeCanvas, false);
 
+    render = anime({
+        duration: Infinity,
+        update: canvasUpdate
+    });
+      
     canvasEl = document.getElementById('mycanvas');
     ctx = canvasEl.getContext('2d');
+    ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);  
+    
+    // backCanvas = document.createElement('canvas');
+    backCanvas = document.getElementById('backCanvas');
+    backCanvas.width = canvasEl.width;
+    backCanvas.height = canvasEl.height;
+    
+    var backCtx = backCanvas.getContext('2d');
+    backCtx.drawImage(canvasEl, 0, 0);
+    backCtx.clearRect(0, 0, backCanvas.width, backCanvas.height);
+    
     // TODO: need update for touchstart not click
     var tap = ('ontouchstart' in window || navigator.msMaxTouchPoints) ? 'touchstart' : 'mousedown';
 
     document.addEventListener(tap, function(e) {
         // window.human = true;
+        var backCtx = backCanvas.getContext('2d');
+        backCtx.drawImage(canvasEl, 0, 0);
         render.play();
         // TODO: need update for touchstart not click
         //updateCoords(e);
@@ -40,11 +58,13 @@ function log(msg) {
 
 function canvasUpdate() {
     // TODO: Replace by new function to copy canvas to another one instead clearing
-    ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);  
+    //ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);  
+    ctx.drawImage(backCanvas, 0, 0);
 }
 
 
 function renderParticule(anim) {
+    //ctx.drawImage(backCanvas, 0, 0);
     for (var i = 0; i < anim.animatables.length; i++) {
       anim.animatables[i].target.draw();
     }
@@ -78,9 +98,10 @@ function createParticule(x,y) {
     return p;
 }
 
+
 function animateParticules(x, y) {
-    // var circle = createCircle(x, y);
     var particules = [];
+
     for (var i = 0; i < numberOfParticules; i++) {
       particules.push(createParticule(x, y));
     }
@@ -93,22 +114,6 @@ function animateParticules(x, y) {
       easing: 'easeOutExpo',
       update: renderParticule
     });
-    /*}) 
-      .add({
-      targets: circle,
-      radius: anime.random(80, 160),
-      lineWidth: 0,
-      alpha: {
-        value: 0,
-        easing: 'linear',
-        duration: anime.random(600, 800),  
-      },
-      duration: anime.random(1200, 1800),
-      easing: 'easeOutExpo',
-      update: renderParticule,
-      offset: 0
-    });
-    */
   }
 
 
@@ -138,10 +143,14 @@ function redraw() {
 /* Resize Canvas to max. size */
 function resizeCanvas() {
     const el = document.getElementById('mycanvas');
+    // ctx = el.getContext('2d');
     /* Use complete width */
     el.width = el.clientWidth;
     /* Use remaining height including a margin to the edge */
     el.height = document.documentElement.clientHeight - el.getBoundingClientRect().top - 5;
+    backCanvas.width = el.width;
+    backCanvas.height = el.height;
+
     BASERADIUS = Math.min(el.width, el.height) / 10;
     redraw();
 }
@@ -208,7 +217,7 @@ function createTestItem() {
         var x = Math.floor(Math.random() * 400);
         var y = Math.floor(Math.random() * 400);
         var color = main_playerColor(Math.floor(Math.random() * 6));
-
+        console.log(color);
         ctx.fillStyle = color;
         ctx.strokeStyle = color;
         ctx.shadowBlur = 2 * BASERADIUS;
@@ -217,6 +226,7 @@ function createTestItem() {
         ctx.arc(x, y, 2 * BASERADIUS, 0, 2 * Math.PI);
         ctx.fill();
         ctx.stroke();
+        ctx.shadowBlur = 0;
     }
 }
 
@@ -441,6 +451,7 @@ Source:
     Anime.js Fireworks canvas demo
     Julian Garnier
 */
+var backCanvas;
 var canvasEl;
 var ctx;
 var numberOfParticules = 30;
@@ -449,9 +460,5 @@ var pointerY = 0;
 var tap;
 var colors = ['#FF1461', '#18FF92', '#5A87FF', '#FBF38C'];
 
-var render = anime({
-    duration: Infinity,
-    update: canvasUpdate
-  });
-  
+var render;
 
